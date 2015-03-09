@@ -17,10 +17,26 @@ let StartingRow = 0
 let PreviewColumn = 12
 let PreviewRow = 1
 
+protocol SwiftrisDelegate {
+
+    func gameDidEnd(swiftris: Swiftris)
+
+    func gameDidBegin(swiftris: Swiftris)
+
+    func gameShapeDidLand(swiftris: Swiftris)
+
+    func gameShapeDidMove(swiftris: Swiftris)
+
+    func gameShapeDidDrop(swiftris: Swiftris)
+
+    func gameDidLevelUp(swiftris: Swiftris)
+}
+
 class Swiftris {
     var blockArray:Array2D<Block>
     var nextShape:Shape?
     var fallingShape:Shape?
+    var delegate:SwiftrisDelegate?
 
     init() {
         fallingShape = nil
