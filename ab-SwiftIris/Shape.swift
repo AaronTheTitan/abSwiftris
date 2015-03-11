@@ -104,7 +104,7 @@ class Shape: Hashable, Printable {
         self.init(column:column, row:row, color:BlockColor.random(), orientation:Orientation.random())
     }
 
-    // 1 - "final" function means it cannot be overrident by subclasses
+    // 1 - "final" function means it cannot be overriden by subclasses
     final func initializeBlocks() {
 
         // 2 - conditional assignment attempts to assign an array into blockRowColumnTranslations after extracting it from the computed dictionary property. If one is not found, the if block is not executed.
@@ -128,8 +128,32 @@ class Shape: Hashable, Printable {
         }
     }
 
+    final func rotateClockwise() {
+        let newOrientation = Orientation.rotate(orientation, clockwise: true)
+        rotateBlocks(newOrientation)
+        orientation = newOrientation
+    }
+
+    final func rotateCounterClockwise() {
+        let newOrientation = Orientation.rotate(orientation, clockwise: false)
+        rotateBlocks(newOrientation)
+        orientation = newOrientation
+    }
+
     final func lowerShapeByOneRow() {
         shiftBy(0, rows:1)
+    }
+
+    final func raiseShapeByOneRow() {
+        shiftBy(0, rows: -1)
+    }
+
+    final func shiftRightByOneColumn() {
+        shiftBy(1, rows: -1)
+    }
+
+    final func shiftLeftByOneColumn() {
+        shiftBy(-1, rows: 0)
     }
 
     // 2 - indlude shiftBy method which will adjust each row and column by rows and columns respectively

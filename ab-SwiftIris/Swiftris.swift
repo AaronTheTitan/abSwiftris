@@ -20,19 +20,15 @@ let PreviewRow = 1
 protocol SwiftrisDelegate {
 
     func gameDidEnd(swiftris: Swiftris)
-
     func gameDidBegin(swiftris: Swiftris)
-
     func gameShapeDidLand(swiftris: Swiftris)
-
     func gameShapeDidMove(swiftris: Swiftris)
-
     func gameShapeDidDrop(swiftris: Swiftris)
-
     func gameDidLevelUp(swiftris: Swiftris)
 }
 
 class Swiftris {
+
     var blockArray:Array2D<Block>
     var nextShape:Shape?
     var fallingShape:Shape?
@@ -48,6 +44,7 @@ class Swiftris {
         if (nextShape == nil) {
             nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
         }
+        delegate?.gameDidBegin(self)
     }
 
 // 2 - method assigns nextShape, preview shape as fallingShape. fallingShape is the moving Tetromino. newShape() then creates a new preview shape before moving fallingShape to the starting row and column. Method returns a tuple of optional Shape objects.
@@ -56,6 +53,27 @@ class Swiftris {
         fallingShape = nextShape
         nextShape = Shape.random(PreviewColumn, startingRow: PreviewRow)
         fallingShape?.moveTo(StartingColumn, row: StartingRow)
+
+        if detectIllegalPlacement() {
+            nextShape = fallingShape
+            nextShape!.moveTo(PreviewColumn, row: PreviewRow)
+            endGame()
+            return (nil, nil)
+        }
+
         return (fallingShape, nextShape)
+    }
+
+    func detectIllegalPlacement() -> Bool {
+        if let shape = fallingShape {
+            for block in shape.blocks {
+                if block.column < 0 || block.column >= NumColumns || block.row < 0 || block.row >= NumRows {
+                    return true
+                } else if blockArray[block.column, block.row] != nil {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
