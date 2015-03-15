@@ -18,7 +18,7 @@ class GameViewController: UIViewController, SwiftrisDelegate, UIGestureRecognize
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var levelLabel: UILabel!
 
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
